@@ -4,30 +4,24 @@ import CSS from './Modal.module.css';
 
 const Modal = ({ onClose, image, tags }) => {
   const onOverlayModalClose = e => {
-    if (e.target !== e.currentTarget) {
-      return;
-    } else {
+    if (e.target === e.currentTarget) {
       onClose();
     }
-  };
-
-  const handleKeyDown = event => {
-    if (event.key === 'Escape') {
-      onClose();
-    }
-  };
-
-  const onHandleKeyDown = () => {
-    window.addEventListener('keydown', handleKeyDown);
   };
 
   useEffect(() => {
-    onHandleKeyDown();
+    const handleKeyDown = event => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, [onClose]);
 
   return (
     <div className={CSS.overlay} onClick={onOverlayModalClose}>
