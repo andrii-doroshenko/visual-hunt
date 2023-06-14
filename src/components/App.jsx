@@ -21,6 +21,8 @@ const App = () => {
         setIsLoading(true);
         setError(false);
 
+        if (!queryValue.trim()) return;
+
         const response = await getPixabayQuery(queryValue, page);
         const imageData = await response.json();
 
@@ -29,15 +31,15 @@ const App = () => {
           setIsButtonShown(true);
           return;
         }
-        setImages(prevImages => [...prevImages, ...imageData.hits]);
+        setImages(prevImages =>
+          page === 1 ? imageData.hits : [...prevImages, ...imageData.hits]
+        );
       } catch (error) {
         setError(true);
       } finally {
         setIsLoading(false);
       }
     };
-
-    if (!queryValue.trim()) return;
 
     fetchImages();
   }, [queryValue, page]);
@@ -50,13 +52,15 @@ const App = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const handleResetPage = () => setPage(1);
+  const handleResetPage = () => {
+    setPage(1);
+  };
 
   return (
     <>
       <Searchbar handleSearch={handleSearch} onResetPage={handleResetPage} />
       {error ? <ErrorMessage /> : null}
-      {images.length !== 0 ? (
+      {images.length > 0 ? (
         <ImageGallery
           images={images}
           onLoadMore={handleLoadMoreImages}
