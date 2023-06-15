@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import CSS from './Searchbar.module.css';
 
-const Searchbar = ({ handleSearch, onResetPage }) => {
+const Searchbar = ({ handleSearch }) => {
   const [value, setValue] = useState('');
 
   const handleChange = ({ target: { value } }) => {
@@ -11,7 +11,6 @@ const Searchbar = ({ handleSearch, onResetPage }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    onResetPage();
     handleSearch(value);
   };
 

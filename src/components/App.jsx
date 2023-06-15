@@ -4,7 +4,9 @@ import ImageGallery from './ImageGallery/ImageGallery';
 import { getPixabayQuery } from '../services/getPixabay';
 import { ErrorMessage } from './ErrorCard/ErrorCard';
 import { ColorRing } from 'react-loader-spinner';
+import { Button } from './Button/Button';
 import CSS from './App.module.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const App = () => {
   const [queryValue, setQueryValue] = useState('');
@@ -17,23 +19,22 @@ const App = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        setIsButtonShown(false);
-        setIsLoading(true);
-        setError(false);
-
         if (!queryValue.trim()) return;
 
         const response = await getPixabayQuery(queryValue, page);
         const imageData = await response.json();
 
-        if (imageData.hits.length === 0) {
-          setError(true);
-          setIsButtonShown(true);
-          return;
+        const imageCount = imageData.hits.length;
+
+        if (imageCount === 0) {
+          Notify.warning('No results for this query');
+        } else if (imageCount < 12) {
+          Notify.warning('No more images were found');
         }
-        setImages(prevImages =>
-          page === 1 ? imageData.hits : [...prevImages, ...imageData.hits]
-        );
+
+        setIsButtonShown(imageCount >= 12);
+
+        setImages(prevImages => [...prevImages, ...imageData.hits]);
       } catch (error) {
         setError(true);
       } finally {
@@ -45,29 +46,27 @@ const App = () => {
   }, [queryValue, page]);
 
   const handleSearch = valueSearch => {
+    setError(false);
+    setPage(1);
     setQueryValue(valueSearch);
+    setImages([]);
   };
 
   const handleLoadMoreImages = () => {
     setPage(prevPage => prevPage + 1);
   };
 
-  const handleResetPage = () => {
-    setPage(1);
-  };
-
   return (
     <>
-      <Searchbar handleSearch={handleSearch} onResetPage={handleResetPage} />
-      {error ? <ErrorMessage /> : null}
-      {images.length > 0 ? (
-        <ImageGallery
-          images={images}
-          onLoadMore={handleLoadMoreImages}
-          isButtonShown={isButtonShown}
-        />
-      ) : null}
-      {isLoading ? <ColorRing wrapperClass={CSS.blocksWrapper} /> : null}
+      <Searchbar handleSearch={handleSearch} />
+      {error && <ErrorMessage />}
+      {images.length > 0 && <ImageGallery images={images} />}
+      {isLoading && <ColorRing wrapperClass={CSS.blocksWrapper} />}
+      {isButtonShown && (
+        <Button className={CSS.loadMore} onClick={handleLoadMoreImages}>
+          Load More
+        </Button>
+      )}
     </>
   );
 };

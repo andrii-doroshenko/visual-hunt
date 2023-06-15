@@ -31,13 +31,13 @@ const ImageGalleryItem = ({ items }) => {
   return (
     <>
       {cards()}
-      {selectedImage ? (
+      {selectedImage && (
         <Modal
           onClose={onHandleKeyDown}
           image={selectedImage.largeImageURL}
           tags={selectedImage.tags}
         />
-      ) : null}
+      )}
     </>
   );
 };
