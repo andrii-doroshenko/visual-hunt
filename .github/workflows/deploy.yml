@@ -22,3 +22,6 @@ jobs:
         with:
           branch: gh-pages
           folder: build
+env:
+  REACT_APP_API_KEY: ${{ secrets.REACT_APP_API_KEY }}
+  REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
