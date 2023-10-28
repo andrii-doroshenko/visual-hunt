@@ -1,16 +1,35 @@
-# Search Images
+# Visual Hunt
 
-This project is a React application that allows users to search for images using the Pixabay API and display the results in a grid layout. Users can enter a search term in the input field, and the application will fetch and display relevant images. Clicking on an image will open a modal window with a larger view of the image and additional details.
+One-page application for searching images and photos.
 
-## Technologies Used
+## Table of Contents
 
-- React: A JavaScript library for building user interfaces
-- React Router: A library for routing in React applications
-- Axios: A promise-based HTTP client for making API requests
+- [Description](#description)
+- [Demo](#demo)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Key Features
+## Description
 
-- Search for images using the Pixabay API
-- Display search results in a grid layout
-- Open a modal window with a larger view of the image and additional details
-- Responsive design for optimal viewing on different devices
+Visual Hunt is a single-page application built with Create React App. It allows users to search for images and photos using various keywords. The application makes use of the Pixabay API to fetch the relevant images based on the user's search queries. Users can view the images in a grid layout and can also click on individual images to view them in a larger format.
+
+## Demo
+
+Check out the live demo of the application [here](https://andrii-doroshenko.github.io/visual-hunt/).
+
+## Installation
+
+To get started with Visual Hunt, you can follow these steps:
+
+1. Clone the repository: `git clone https://github.com/andrii-doroshenko/visual-hunt.git`
+2. Change into the project directory: `cd visual-hunt`
+3. Install the necessary dependencies: `npm install`
+
+## Usage
+
+Once you have installed the dependencies, you can run the application using the following command:
+
+```bash
+npm start
